@@ -9,9 +9,18 @@ import Foundation
 import CoreData
 import UIKit
 
+struct RegisterProduct {
+    var name: String
+    var value: Double
+    var realValue: Double
+    var isCard: Bool
+    var image: String
+    var state: State
+}
+
 protocol ShopRegistrationViewModelProtocol: AnyObject {
     func fetchStates() -> [State]
-    func saveProduct(item: Product, state: State)
+    func saveProduct(product: RegisterProduct, state: State)
 }
 
 class ShopRegistrationViewModel: ShopRegistrationViewModelProtocol {
@@ -19,22 +28,10 @@ class ShopRegistrationViewModel: ShopRegistrationViewModelProtocol {
     var stateCompletion = {}
     
     func fetchStates() -> [State] {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return [] }
-        let managerContext = appDelegate.persistentContainer.viewContext
-        
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "State")
-        
-        do {
-            let states = try managerContext.fetch(fetchRequest) as! [State]
-            print("Lista de Estados : \(states)")
-            return states
-        } catch let error as NSError {
-            print("Erro retornar os produtos : \(error)")
-            return []
-        }
+        return DataRouter.fetchStates()
     }
     
-    func saveProduct(item: Product, state: State) {
+    func saveProduct(product: RegisterProduct, state: State) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         
         let managerContext = appDelegate.persistentContainer.viewContext
@@ -44,9 +41,11 @@ class ShopRegistrationViewModel: ShopRegistrationViewModelProtocol {
         
         // Create Products
         let product = Product(context: managerContext)
-        product.name = item.name
-        product.place = item.place
-        product.value = item.value
+        product.name = product.name
+        product.place = state
+        product.value = product.value
+        product.image = product.image
+        product.realValue = product.realValue
         
         state.addToShop(product)
         

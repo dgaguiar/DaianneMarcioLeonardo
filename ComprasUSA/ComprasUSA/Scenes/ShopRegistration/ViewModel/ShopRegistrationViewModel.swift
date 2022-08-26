@@ -42,7 +42,7 @@ class ShopRegistrationViewModel: ShopRegistrationViewModelProtocol {
         // Create Products
         let product = Product(context: managerContext)
         product.name = product.name
-        product.place = state
+//        product.place = state
         product.value = product.value
         product.image = product.image
         product.realValue = product.realValue

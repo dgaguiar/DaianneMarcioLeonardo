@@ -82,7 +82,7 @@ class StateRegistrationViewController: UIViewController {
         alert.addTextField { (textField) in
             
             textField.keyboardType = .decimalPad
-            textField.text = "U$ 0.00"
+            textField.placeholder = "0.00"
         }
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             if let textField = alert?.textFields![0].text as? String {

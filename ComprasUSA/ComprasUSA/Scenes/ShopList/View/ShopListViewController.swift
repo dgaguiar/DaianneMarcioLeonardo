@@ -16,92 +16,54 @@ class ShopListViewController: UIViewController {
     
     @IBOutlet weak var tableview: UITableView!
     
-    var products: [NSManagedObject] = []
+    @IBAction func cleanList(_ sender: Any) {
+        self.viewModel.cleanProducts {
+            self.tableview.reloadData()
+        }
+    }
     
-    var viewModel: ShopListViewModelProtocol?
+    var products: [ShopListModel] = []
+    var viewModel: ShopListViewModelProtocol = ShopListViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.navigationItem.rightBarButtonItem?.target = #selector(goToreg)
+       setup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setup()
-        // MARK: Fetch no Core Data
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        let managerContext = appDelegate.persistentContainer.viewContext
-        
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Product")
-        
-        do {
-            products = try managerContext.fetch(fetchRequest)
-        } catch let error as NSError {
-            print("Erro retornar os produtos : \(error)")
-        }
+        getdata()
     }
     
-    func relationship() {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        
-        let managerContext = appDelegate.persistentContainer.viewContext
-        // Created State
-        let state = State(context: managerContext)
-        state.name = "Sao Paulo"
-        
-        // Create Products
-        let product = Product(context: managerContext)
-        product.name = "Mac book"
-//        product.place = state
-        
-        state.addToShop(product)
-        
-        // save context
-        
-        do {
-            try managerContext.save()
-        } catch let error as NSError {
-            print("Erro retornar os produtos : \(error)")
-        }
-    }
-    
-    // MARK: Salvar no Core Data
-    func save(name: String) {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        
-        let managerContext = appDelegate.persistentContainer.viewContext
-        let entity = NSEntityDescription.entity(forEntityName: "Product", in: managerContext)!
-        
-        let product = NSManagedObject(entity: entity, insertInto: managerContext)
-        product.setValue(name, forKey: "name")
-            
-        do {
-            try managerContext.save()
-            products.append(product)
-        } catch let error as NSError {
-            print("Erro ao salvar o novo produto : \(error)")
-        }
+    private func getdata() {
+        self.products = self.viewModel.getProductsList()
+        tableview.reloadData()
     }
     
     private func setup() {
-        tableview.register(ShopListTableViewCell.self, forCellReuseIdentifier: "ShopTableViewCell")
         tableview.delegate = self
         tableview.dataSource = self
     }
-    
 }
 
 extension ShopListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel?.getProductsList().count ?? 0
+        return products.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = ShopListTableViewCell(style: .default, reuseIdentifier: nil)
+        let isCard = products[indexPath.row].isCardPayment ? "Cartao" : "Dinheiro"
+        cell.set(title: products[indexPath.row].name,
+                 subtile: isCard,
+                 dolarValue: String(products[indexPath.row].dolValue),
+                 realValue: String(products[indexPath.row].realValue),
+                 state: products[indexPath.row].place)
+        return cell
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableview.dequeueReusableCell(withIdentifier: "ShopTableViewCell") as? ShopListTableViewCell {
-            return cell
-        }
-        
-        return UITableViewCell()
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
     }
 }
 

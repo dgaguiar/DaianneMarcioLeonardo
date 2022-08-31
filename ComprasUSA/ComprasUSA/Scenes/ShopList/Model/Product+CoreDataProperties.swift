@@ -20,6 +20,7 @@ extension Product {
     @NSManaged public var value: Double
     @NSManaged public var realValue: Double
     @NSManaged public var image: String
+    @NSManaged public var isCardPayment: Bool
     @NSManaged public var place: State?
 
 }

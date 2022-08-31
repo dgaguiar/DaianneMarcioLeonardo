@@ -29,13 +29,23 @@ class ShopRegistrationViewController: UIViewController {
     
     @IBAction func register(_ sender: Any) {
         guard let product = setProduct() else { return }
-        viewModel?.saveProduct(product: product, state: selectedState)
-        self.dismiss(animated: true)
+        if let selectedState = selectedState {
+            viewModel?.saveProduct(product: product, state: selectedState)
+            self.dismiss(animated: true)
+        } else {
+            alert("Seleciona um estado")
+        }
     }
     
     @IBAction func selectState(_ sender: Any) {
         selectState()
     }
+    
+    // MARK: Properties
+    
+    var viewModel: ShopRegistrationViewModelProtocol? = ShopRegistrationViewModel()
+    var selectedState: State?
+    var realValueUpdate: Double = 0.0
     
     @objc func selectState() {
         guard let states = viewModel?.fetchStates() else {
@@ -58,6 +68,7 @@ class ShopRegistrationViewController: UIViewController {
                 self.selectedState = state
                 self.tfState.text = state.name
                 self.lbStateTax.text = "IOF:  \(state.tax) %"
+                self.updateValue()
                 alert.dismiss(animated: true)
                 }
             alert.addAction(action)
@@ -73,10 +84,31 @@ class ShopRegistrationViewController: UIViewController {
         self.present(alertEmptyState, animated: true, completion: nil)
     }
     
-    // MARK: Properties
-    
-    var viewModel: ShopRegistrationViewModelProtocol? = ShopRegistrationViewModel()
-    var selectedState: State = State()
+    private func updateValue() {
+        let dolar = UserDefaults.standard.string(forKey: "dolar")
+        let dolarStr = dolar?.replacingOccurrences(of: "U$ ", with: "") ?? String()
+        
+        let dolarDouble = Double(dolarStr) ?? 1.0
+        
+        if let productValue = Double(tfValue.text ?? "0.0") {
+            var realvalue = dolarDouble * productValue
+            
+            if switchIsCard.isOn {
+                let tax = selectedState?.tax ?? 100.0
+                realvalue = realvalue  * (1 + (tax / 100))
+                
+                lbRealValue.text = "R$ \(realvalue)"
+            }
+            
+            lbRealValue.text = "R$ \(realvalue)"
+            realValueUpdate = realvalue
+        
+            return
+        }
+        
+        alert("Valor invalido")
+        
+    }
     
     // MARK: Life Cycle
     override func viewDidLoad() {
@@ -92,11 +124,12 @@ class ShopRegistrationViewController: UIViewController {
 
     func setProduct() -> RegisterProduct? {
         if let name = tfName.text,
-            let value = tfValue.text {
+           let value = tfValue.text,
+           let selectedState = selectedState{
             let product = RegisterProduct(
                 name: name,
                 value: Double(value) ?? 0.0,
-                realValue: 0.0,
+                realValue: realValueUpdate,
                 isCard: switchIsCard.isOn,
                 image: String(),
                 state: selectedState)

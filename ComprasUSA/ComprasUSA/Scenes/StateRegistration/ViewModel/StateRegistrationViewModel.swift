@@ -10,15 +10,16 @@ import Foundation
 protocol StateRegistrationViewModelProtocol: AnyObject {
     func fetchStates() -> [State]
     func postState(name: String, tax: Double)
+    func deleteState(_ state: State)
 }
 
 class StateRegistrationViewModel: StateRegistrationViewModelProtocol {
     func fetchStates() -> [State] {
-        return DataRouter.fetchStates()
+        return DataProvider.fetchStates()
     }
     
     func postState(name: String, tax: Double) {
-        guard let managerContext = DataRouter.context() else { return }
+        guard let managerContext = DataProvider.context() else { return }
         let state = State(context: managerContext)
 
         state.name = name
@@ -30,5 +31,9 @@ class StateRegistrationViewModel: StateRegistrationViewModelProtocol {
         } catch let error as NSError {
             print("Erro retornar os produtos : \(error)")
         }
+    }
+    
+    func deleteState(_ state: State) {
+        DataProvider.deleteState(state)
     }
 }

@@ -50,6 +50,7 @@ class StateRegistrationViewController: UIViewController {
         super.viewWillAppear(animated)
         tfStateIof.text = String()
         tfStateName.text = String()
+        lbDolar.text = UserDefaults.standard.string(forKey: "dolar") ?? "U$ 3.00"
     }
     
     // MARK: Setup
@@ -87,6 +88,7 @@ class StateRegistrationViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             if let textField = alert?.textFields![0].text as? String {
                 self.lbDolar.text = "U$ \(textField)"
+                UserDefaults.standard.set("U$ \(textField)", forKey: "dolar")
                 print("Text field: \(textField)")
             }
         }))
@@ -101,10 +103,18 @@ extension StateRegistrationViewController: UITableViewDataSource, UITableViewDel
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = UITableViewCell()
+        let cell = StateRegistrationTableViewCell()
         guard let name = states[indexPath.row].name else { return UITableViewCell() }
-        cell.textLabel?.text = "\(name) - IOF \(states[indexPath.row].tax) %"
+        cell.set(state: "\(name)",
+                 iofValue: "\(states[indexPath.row].tax)")
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            viewModel.deleteState(states[indexPath.row])
+            reloadInputViews()
+        }
     }
     
 }

@@ -7,9 +7,11 @@
 
 import Foundation
 import CoreData
+import UIKit
 
 protocol ShopListViewModelProtocol: AnyObject {
     func getProductsList() -> [ShopListModel]
+    func cleanProducts(completion: @escaping () -> Void)
 }
 
 class ShopListViewModel: ShopListViewModelProtocol {
@@ -25,18 +27,24 @@ class ShopListViewModel: ShopListViewModelProtocol {
     
     func getProductsList() -> [ShopListModel] {
         var list: [ShopListModel] = []
+        
+        // MARK: Fetch no Core Data
+        let products = DataProvider.fetchProdutcs()
+        
         for product in products {
-           let product =  ShopListModel(name: product.value(forKey: "name") as! String,
-                          dolValue: product.value(forKey: "value") as! Double, date: Date(), realValue: 0.00)
+            let product =  ShopListModel(name: product.name ?? "produto",
+                                         dolValue: product.value,
+                                         date: Date(),
+                                         realValue: product.realValue,
+                                         isCardPayment: product.isCardPayment,
+                                         place: product.place?.name ?? "nao encontrado")
             list.append(product)
         }
-//        let list = [
-//            ShopListModel(name: "MacbookPro", dolValue: 100.00, date: Date(), realValue: 500.00),
-//            ShopListModel(name: "NoteBook", dolValue: 200.00, date: Date(), realValue: 1000.0),
-//            ShopListModel(name: "Nike Shoe", dolValue: 300.00, date: Date(), realValue: 1500.00),
-//            ShopListModel(name: "Bag", dolValue: 400.00, date: Date(), realValue: 1800.00)
-//        ]
         
         return list
+    }
+    
+    func cleanProducts(completion: @escaping () -> Void) {
+        DataProvider.deleteProduct()
     }
 }

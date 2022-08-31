@@ -28,30 +28,28 @@ class ShopRegistrationViewModel: ShopRegistrationViewModelProtocol {
     var stateCompletion = {}
     
     func fetchStates() -> [State] {
-        return DataRouter.fetchStates()
+        return DataProvider.fetchStates()
     }
     
     func saveProduct(product: RegisterProduct, state: State) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         
         let managerContext = appDelegate.persistentContainer.viewContext
-        // Created State
-//        let state = State(context: managerContext)
-//        state.name = "Sao Paulo"
-        
         // Create Products
-        let product = Product(context: managerContext)
-        product.name = product.name
-//        product.place = state
-        product.value = product.value
-        product.image = product.image
-        product.realValue = product.realValue
-        
-        state.addToShop(product)
-        
+        let productM = Product(context: managerContext)
+        productM.name = product.name
+        productM.place = state
+        productM.value = product.value
+        productM.image = product.image
+        productM.realValue = product.realValue
+        productM.isCardPayment = product.isCard
+
+        print(">>>>>> SAVE PRODUCT \(product)")
+
         // save context
         do {
             try managerContext.save()
+            print(">>>>>> SACCESS SAVE")
         } catch let error as NSError {
             print("Erro retornar os produtos : \(error)")
         }

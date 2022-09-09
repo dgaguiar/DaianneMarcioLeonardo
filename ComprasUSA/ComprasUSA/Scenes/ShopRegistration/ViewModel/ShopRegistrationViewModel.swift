@@ -49,7 +49,7 @@ class ShopRegistrationViewModel: ShopRegistrationViewModelProtocol {
         // save context
         do {
             try managerContext.save()
-            print(">>>>>> SACCESS SAVE")
+            print(">>>>>> SUCCESS SAVE")
         } catch let error as NSError {
             print("Erro retornar os produtos : \(error)")
         }

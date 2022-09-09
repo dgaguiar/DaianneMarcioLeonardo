@@ -96,8 +96,8 @@ class ShopListTableViewCell: UITableViewCell {
     func set(title: String, subtile: String, dolarValue: String, realValue: String, state: String) {
         lbProductName.text = title
         lbPaymentType.text = subtile
-        lbDolarValue.text = "U$ \(dolarValue)"
-        lbRealValue.text = "R$ \(realValue)"
+        lbDolarValue.text = dolarValue
+        lbRealValue.text = realValue
         lbStateName.text = state
     }
 }

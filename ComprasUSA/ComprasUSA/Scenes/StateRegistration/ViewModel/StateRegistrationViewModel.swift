@@ -8,32 +8,34 @@
 import Foundation
 
 protocol StateRegistrationViewModelProtocol: AnyObject {
-    func fetchStates() -> [State]
-    func postState(name: String, tax: Double)
-    func deleteState(_ state: State)
+  func fetchStates() -> [State]
+  func postState(name: String, tax: Double, completion: @escaping (Bool) -> Void)
+  func deleteState(_ state: State)
 }
 
 class StateRegistrationViewModel: StateRegistrationViewModelProtocol {
-    func fetchStates() -> [State] {
-        return DataProvider.fetchStates()
-    }
+  func fetchStates() -> [State] {
+    return DataProvider.fetchStates()
+  }
+  
+  func postState(name: String, tax: Double, completion: @escaping (Bool) -> Void) {
+    guard let managerContext = DataProvider.context() else { return }
+    let state = State(context: managerContext)
     
-    func postState(name: String, tax: Double) {
-        guard let managerContext = DataProvider.context() else { return }
-        let state = State(context: managerContext)
-
-        state.name = name
-        state.tax = tax
-        
-        do {
-            try managerContext.save()
-            print(">>>>> sucesso ao salvar")
-        } catch let error as NSError {
-            print("Erro retornar os produtos : \(error)")
-        }
-    }
+    state.name = name
+    state.tax = tax
     
-    func deleteState(_ state: State) {
-        DataProvider.deleteState(state)
+    do {
+      try managerContext.save()
+      completion(true)
+      print(">>>>> sucesso ao salvar")
+    } catch let error as NSError {
+      completion(false)
+      print("Erro retornar os produtos : \(error)")
     }
+  }
+  
+  func deleteState(_ state: State) {
+    DataProvider.deleteState(state)
+  }
 }

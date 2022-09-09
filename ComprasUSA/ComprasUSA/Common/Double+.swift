@@ -6,16 +6,25 @@
 //
 
 import Foundation
-//
-//extension Double {
-//    static func getRealCurrencyValue() -> String {
-//        let ptBr: Locale = Locale(identifier: "pt-BR")
-//        let currencyFormatter = NumberFormatter()
-//        currencyFormatter.usesGroupingSeparator = true
-//        currencyFormatter.numberStyle = .currency
-//        // localize to your grouping and decimal separator
-//        currencyFormatter.locale = Locale.current
-////        let valorString = currencyFormatter.string(from: NSNumber(value: self))
-//        return valorString
-//    }
-//}
+
+extension Double {
+  func getRealCurrencyValue() -> String {
+    let currencyFormatter = NumberFormatter()
+    currencyFormatter.locale = Locale(identifier: "pt-BR")
+    
+    currencyFormatter.minimumFractionDigits = 2
+    currencyFormatter.maximumFractionDigits = 2
+    currencyFormatter.numberStyle = .currency
+    return currencyFormatter.string(for: self) ?? "undefined"
+  }
+
+//  func setRealCurrencyValue() {
+//    let currencyFormatter = NumberFormatter()
+//    currencyFormatter.locale = Locale(identifier: "pt-BR")
+//    
+//    currencyFormatter.minimumFractionDigits = 2
+//    currencyFormatter.maximumFractionDigits = 2
+//    currencyFormatter.numberStyle = .decimal
+//    return currencyFormatter.string(for: self)
+//  }
+}

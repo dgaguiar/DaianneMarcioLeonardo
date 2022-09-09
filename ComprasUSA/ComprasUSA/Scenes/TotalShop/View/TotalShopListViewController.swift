@@ -27,7 +27,7 @@ class TotalShopListViewController: UIViewController {
     
     func setup() {
         let values = viewModel.getValue()
-        lbDolar.text = String(values.dolar)
-        lbReal.text = String(values.real)
+      lbDolar.text = values.dolar.getRealCurrencyValue()
+      lbReal.text = values.real.getRealCurrencyValue()
     }
 }

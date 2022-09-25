@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5DB0F3C928E0A2CE00B08DCD /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB0F3C828E0A2CE00B08DCD /* UIImage+.swift */; };
+		5DB0F3CB28E0A30400B08DCD /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB0F3CA28E0A30400B08DCD /* String+.swift */; };
 		D0069C7828B903A7000267E2 /* State+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0069C7428B903A7000267E2 /* State+CoreDataClass.swift */; };
 		D0069C7928B903A7000267E2 /* State+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0069C7528B903A7000267E2 /* State+CoreDataProperties.swift */; };
 		D0069C7A28B903A7000267E2 /* Product+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0069C7628B903A7000267E2 /* Product+CoreDataClass.swift */; };
@@ -54,6 +56,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5DB0F3C828E0A2CE00B08DCD /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
+		5DB0F3CA28E0A30400B08DCD /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		D0069C7428B903A7000267E2 /* State+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "State+CoreDataClass.swift"; sourceTree = "<group>"; };
 		D0069C7528B903A7000267E2 /* State+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "State+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D0069C7628B903A7000267E2 /* Product+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Product+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -279,6 +283,8 @@
 			children = (
 				D0A145B628B94679008B90DA /* DataProvider.swift */,
 				D0A145C928BEE257008B90DA /* Double+.swift */,
+				5DB0F3C828E0A2CE00B08DCD /* UIImage+.swift */,
+				5DB0F3CA28E0A30400B08DCD /* String+.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -499,6 +505,8 @@
 				D01FE8BB2899ED3A009C3044 /* ShopListTableViewCell.swift in Sources */,
 				D0A145C628BED6DC008B90DA /* TotalShopListViewController.swift in Sources */,
 				D01FE8B52899E2EC009C3044 /* ShopListViewModel.swift in Sources */,
+				5DB0F3C928E0A2CE00B08DCD /* UIImage+.swift in Sources */,
+				5DB0F3CB28E0A30400B08DCD /* String+.swift in Sources */,
 				D01FE8AF2899E25C009C3044 /* ShopListViewController.swift in Sources */,
 				D01FE8702899DD3E009C3044 /* SceneDelegate.swift in Sources */,
 			);

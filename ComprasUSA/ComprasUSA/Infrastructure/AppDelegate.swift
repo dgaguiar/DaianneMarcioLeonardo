@@ -11,7 +11,7 @@ import CoreData
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -79,3 +79,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+extension AppDelegate {
+    private func setup() {
+        prepareNavController()
+    }
+    
+    private func prepareNavController() {
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.rootViewController = UltraNavigationController(rootViewController: MainTabBarController())
+        window?.makeKeyAndVisible()
+    }
+}
+
+class UltraNavigationController: UINavigationController {
+    override var childForStatusBarStyle: UIViewController? {
+        return viewControllers.last
+    }
+}

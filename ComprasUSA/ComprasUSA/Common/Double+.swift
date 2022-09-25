@@ -8,23 +8,23 @@
 import Foundation
 
 extension Double {
-  func getRealCurrencyValue() -> String {
-    let currencyFormatter = NumberFormatter()
-    currencyFormatter.locale = Locale(identifier: "pt-BR")
+    func getRealCurrencyValue() -> String {
+        let currencyFormatter = NumberFormatter()
+        currencyFormatter.locale = Locale(identifier: "pt-BR")
+        
+        currencyFormatter.minimumFractionDigits = 2
+        currencyFormatter.maximumFractionDigits = 2
+        currencyFormatter.numberStyle = .currency
+        return currencyFormatter.string(for: self) ?? "undefined"
+    }
     
-    currencyFormatter.minimumFractionDigits = 2
-    currencyFormatter.maximumFractionDigits = 2
-    currencyFormatter.numberStyle = .currency
-    return currencyFormatter.string(for: self) ?? "undefined"
-  }
-
-//  func setRealCurrencyValue() {
-//    let currencyFormatter = NumberFormatter()
-//    currencyFormatter.locale = Locale(identifier: "pt-BR")
-//    
-//    currencyFormatter.minimumFractionDigits = 2
-//    currencyFormatter.maximumFractionDigits = 2
-//    currencyFormatter.numberStyle = .decimal
-//    return currencyFormatter.string(for: self)
-//  }
+    func getDolarCurrencyValue() -> String {
+        let currencyFormatter = NumberFormatter()
+        currencyFormatter.locale = Locale(identifier: "en-US")
+        
+        currencyFormatter.minimumFractionDigits = 2
+        currencyFormatter.maximumFractionDigits = 2
+        currencyFormatter.numberStyle = .currency
+        return currencyFormatter.string(for: self) ?? "undefined"
+    }
 }

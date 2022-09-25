@@ -18,7 +18,7 @@ class ShopListViewController: UIViewController {
     
     @IBAction func cleanList(_ sender: Any) {
         self.viewModel.cleanProducts {
-            self.tableview.reloadData()
+            self.getdata()
         }
     }
     

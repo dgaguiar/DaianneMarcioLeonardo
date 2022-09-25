@@ -137,7 +137,7 @@ class ShopRegistrationViewController: UIViewController, UIImagePickerControllerD
                 value: Double(value) ?? 0.0,
                 realValue: realValueUpdate,
                 isCard: switchIsCard.isOn,
-                image: String(),
+                image: selectedImage,
                 state: selectedState)
             return product
         }

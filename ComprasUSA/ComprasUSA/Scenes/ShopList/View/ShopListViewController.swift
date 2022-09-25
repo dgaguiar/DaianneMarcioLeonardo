@@ -56,7 +56,7 @@ extension ShopListViewController: UITableViewDelegate, UITableViewDataSource {
         let isCard = products[indexPath.row].isCardPayment ? "Cartao" : "Dinheiro"
         cell.set(title: products[indexPath.row].name,
                  subtile: isCard,
-                 dolarValue: products[indexPath.row].dolValue.getRealCurrencyValue(),
+                 dolarValue: products[indexPath.row].dolValue.getDolarCurrencyValue(),
                  realValue: products[indexPath.row].realValue.getRealCurrencyValue(),
                  state: products[indexPath.row].place)
         return cell

@@ -131,7 +131,7 @@ class ShopRegistrationViewController: UIViewController, UIImagePickerControllerD
     func setProduct() -> RegisterProduct? {
         if let name = tfName.text,
            let value = tfValue.text,
-           let selectedState = selectedState{
+           let selectedState = selectedState {
             let product = RegisterProduct(
                 name: name,
                 value: Double(value) ?? 0.0,

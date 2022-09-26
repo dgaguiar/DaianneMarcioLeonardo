@@ -43,8 +43,6 @@ class ShopListTableViewCell: UITableViewCell {
     let imgProduct: UIImageView = {
         let img = UIImageView(image: UIImage(named: "playstore"))
         img.contentMode = .scaleAspectFit
-        img.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        img.heightAnchor.constraint(equalToConstant: 60).isActive = true
         return img
     }()
     
@@ -79,6 +77,11 @@ class ShopListTableViewCell: UITableViewCell {
         imageStack.addArrangedSubview(imgProduct)
         imageStack.addArrangedSubview(viewVFour)
         
+        NSLayoutConstraint.activate([
+            imgProduct.widthAnchor.constraint(equalToConstant: 60),
+            imgProduct.heightAnchor.constraint(equalToConstant: 60)
+        ])
+        
         mainStack.addArrangedSubview(imageStack)
         
         let vStack = UIStackView()
@@ -92,18 +95,13 @@ class ShopListTableViewCell: UITableViewCell {
         stackHTitle.addArrangedSubview(lbProductName)
         stackHTitle.addArrangedSubview(UIView())
         
-        let stackHDolarValue = UIStackView()
-        stackHDolarValue.translatesAutoresizingMaskIntoConstraints = false
-        stackHDolarValue.axis = .horizontal
-        stackHDolarValue.addArrangedSubview(lbDolarValue)
-        stackHDolarValue.addArrangedSubview(UIView())
+        let stackH = UIStackView()
+        stackH.translatesAutoresizingMaskIntoConstraints = false
+        stackH.axis = .horizontal
         
-        let stackHRealValue = UIStackView()
-        stackHRealValue.translatesAutoresizingMaskIntoConstraints = false
-        stackHRealValue.axis = .horizontal
-        
-        stackHRealValue.addArrangedSubview(lbRealValue)
-        stackHRealValue.addArrangedSubview(UIView())
+        stackH.addArrangedSubview(lbPaymentType)
+        stackH.addArrangedSubview(UIView())
+        stackH.addArrangedSubview(lbRealValue)
         
         let stackHThree = UIStackView()
         stackHThree.translatesAutoresizingMaskIntoConstraints = false
@@ -111,15 +109,15 @@ class ShopListTableViewCell: UITableViewCell {
         
         stackHThree.addArrangedSubview(lbStateName)
         stackHThree.addArrangedSubview(UIView())
+        stackHThree.addArrangedSubview(lbDolarValue)
         
         vStack.addArrangedSubview(stackHTitle)
-        vStack.addArrangedSubview(stackHDolarValue)
-        vStack.addArrangedSubview(stackHRealValue)
-        vStack.addArrangedSubview(lbPaymentType)
+        vStack.addArrangedSubview(stackH)
         vStack.addArrangedSubview(stackHThree)
 
         mainStack.addArrangedSubview(viewHFour)
         mainStack.addArrangedSubview(vStack)
+        mainStack.addArrangedSubview(viewHFour)
         contentView.addSubview(mainStack)
         NSLayoutConstraint.activate([
             mainStack.topAnchor.constraint(equalTo: self.topAnchor),
@@ -138,8 +136,8 @@ class ShopListTableViewCell: UITableViewCell {
     func set(title: String, subtile: String, dolarValue: String, realValue: String, state: String, image: String) {
         lbProductName.text = title
         lbPaymentType.text = "compra feita com \(subtile)"
-        lbDolarValue.text = "valor gasto em dólar \(dolarValue)"
-        lbRealValue.text = "valor gasto em real \(realValue)"
+        lbDolarValue.text = "Dólar \(dolarValue)"
+        lbRealValue.text = "\(realValue)"
         lbStateName.text = state
         imgProduct.image = image.convertBase64StringToImage()
     }

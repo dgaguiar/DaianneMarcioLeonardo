@@ -17,9 +17,9 @@ class ShopListViewController: UIViewController {
     @IBOutlet weak var tableview: UITableView!
     
     @IBAction func cleanList(_ sender: Any) {
-        self.viewModel.cleanProducts {
-            self.getdata()
-        }
+        self.viewModel.cleanProducts {}
+        products = []
+        self.tableview.reloadData()
     }
     
     var products: [ShopListModel] = []
@@ -58,12 +58,13 @@ extension ShopListViewController: UITableViewDelegate, UITableViewDataSource {
                  subtile: isCard,
                  dolarValue: products[indexPath.row].dolValue.getDolarCurrencyValue(),
                  realValue: products[indexPath.row].realValue.getRealCurrencyValue(),
-                 state: products[indexPath.row].place)
+                 state: products[indexPath.row].place,
+                 image: viewModel.products[indexPath.row].image)
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return 120
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

@@ -27,4 +27,8 @@ extension Double {
         currencyFormatter.numberStyle = .currency
         return currencyFormatter.string(for: self) ?? "undefined"
     }
+    
+    func formatTwoZeros() -> String {
+        return String(format: "%.2f", self)
+    }
 }

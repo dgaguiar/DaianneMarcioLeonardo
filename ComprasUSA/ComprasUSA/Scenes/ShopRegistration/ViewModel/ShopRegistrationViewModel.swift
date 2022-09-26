@@ -21,6 +21,7 @@ struct RegisterProduct {
 protocol ShopRegistrationViewModelProtocol: AnyObject {
     func fetchStates() -> [State]
     func saveProduct(product: RegisterProduct, state: State)
+    func calculateValue(_ productValue: String?, tax: Double, isCard: Bool) -> Double?
 }
 
 class ShopRegistrationViewModel: ShopRegistrationViewModelProtocol {
@@ -53,5 +54,27 @@ class ShopRegistrationViewModel: ShopRegistrationViewModelProtocol {
         } catch let error as NSError {
             print("Erro retornar os produtos : \(error)")
         }
+    }
+    
+    func calculateValue(_ productValue: String?, tax: Double, isCard: Bool) -> Double? {
+        let dolar = UserDefaults.standard.string(forKey: "dolar")
+        let iof = UserDefaults.standard.string(forKey: "IOF")
+        let dolarStr = dolar?.replacingOccurrences(of: "U$ ", with: "") ?? String()
+        let iofStr = iof?.replacingOccurrences(of: "%", with: "") ?? String()
+        
+        let dolarDouble = Double(dolarStr) ?? 1.0
+        let iofDouble = Double(iofStr) ?? 1.0
+        
+        if let productValue = Double(productValue ?? "0.0") {
+            var realvalue = dolarDouble * productValue
+            let tax = tax
+            realvalue = realvalue  * (1 + (tax / 100))
+            
+            if isCard {
+                realvalue = realvalue * (1 + (iofDouble / 100))
+            }
+            return realvalue
+        }
+        return nil
     }
 }

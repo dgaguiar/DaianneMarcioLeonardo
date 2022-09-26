@@ -10,7 +10,7 @@ import UIKit
 extension String {
     func convertBase64StringToImage() -> UIImage {
         let imageData = Data(base64Encoded: self) ?? Data()
-        let image = UIImage(data: imageData) ?? UIImage()
+        let image = (UIImage(data: imageData) ?? UIImage(named: "playstore")) ?? UIImage()
         return image
     }
 }

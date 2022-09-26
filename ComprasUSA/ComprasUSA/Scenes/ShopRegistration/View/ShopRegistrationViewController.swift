@@ -31,9 +31,11 @@ class ShopRegistrationViewController: UIViewController, UIImagePickerControllerD
     }
     
     @IBAction func register(_ sender: Any) {
+        btnRegister.setTitle("carregando...", for: .normal)
         guard let product = setProduct() else { return }
         if let selectedState = selectedState {
             viewModel?.saveProduct(product: product, state: selectedState)
+            btnRegister.setTitle("cadastar", for: .normal)
             self.dismiss(animated: true)
         } else {
             alert("Seleciona um estado")
@@ -89,32 +91,17 @@ class ShopRegistrationViewController: UIViewController, UIImagePickerControllerD
     }
     
     private func updateValue() {
-        let dolar = UserDefaults.standard.string(forKey: "dolar")
-        let iof = UserDefaults.standard.string(forKey: "IOF")
-        let dolarStr = dolar?.replacingOccurrences(of: "U$ ", with: "") ?? String()
-        let iofStr = iof?.replacingOccurrences(of: "%", with: "") ?? String()
-        
-        let dolarDouble = Double(dolarStr) ?? 1.0
-        let iofDouble = Double(iofStr) ?? 1.0
-        
-        if let productValue = Double(tfValue.text ?? "0.0") {
-            var realvalue = dolarDouble * productValue
-            let tax = selectedState?.tax ?? 100.0
-            realvalue = realvalue  * (1 + (tax / 100))
-            
-            if switchIsCard.isOn {
-                realvalue = realvalue * (1 + (iofDouble / 100))
-            }
-            
-            lbRealValue.text = realvalue.getRealCurrencyValue()
-            realValueUpdate = realvalue
+        if let realValue = viewModel?.calculateValue(tfValue.text ?? "0.0",
+                                                     tax: selectedState?.tax ?? 100.0,
+                                                     isCard: switchIsCard.isOn) {
+            lbRealValue.text = realValue.getRealCurrencyValue()
+            realValueUpdate = realValue
             btnRegister.isEnabled = true
-            return
+        } else {
+            tfValue.text = ""
+            btnRegister.isEnabled = false
+            alert("Valor invalido")
         }
-        tfValue.text = ""
-        btnRegister.isEnabled = false
-        alert("Valor invalido")
-        
     }
     
     // MARK: Life Cycle
